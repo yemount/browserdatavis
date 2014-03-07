@@ -1,6 +1,5 @@
 import sqlite3
 import urllib
-from bs4 import BeautifulSoup
 from urlparse import urlparse
 import re
 import codecs
@@ -12,7 +11,6 @@ CHROMESECOND = 1000000
 books = {}
 lasttstamp = None
 favicons = {}
-baseFaviconId = int(sys.argv[3])
 count = 0
 
 # urls: { id : url}
@@ -31,7 +29,7 @@ class Url:
 # books: [ date, [urls], totalDuration, totalByteCount, title, cover ]        
 class Book:
     def __init__(self):
-        self.urls = {}
+        self.urls = []
         self.totalByteCount = 0
         self.totalDuration = 0
         self.title = ""
@@ -44,9 +42,8 @@ conn = sqlite3.connect('History')
 conn1 = sqlite3.connect('History')
 c = conn.cursor()
 c1 = conn.cursor()
+count = 0
 for row in c.execute('SELECT * from urls ORDER BY id ASC'):
-    if row[0] < int(sys.argv[1]) or row[0] > int(sys.argv[2]):
-        continue
     # convert timestamp
     url = Url(row[0], row[1], row[2], chromeToEpochTime(row[5]))
 
@@ -55,37 +52,20 @@ for row in c.execute('SELECT * from urls ORDER BY id ASC'):
         date = chromeToEpochTime(vRow[2]).date()
         if date not in books:
             books[date] = Book()
-        if vRow[1] not in books[date].urls:
-            books[date].urls[vRow[1]] = [0, None]   # duration, lastvisittime
-        books[date].urls[vRow[1]][0] += vRow[7]*1.0 / CHROMESECOND
-        lastTime = books[date].urls[vRow[1]][1]
-        if lastTime is None or lastTime < chromeToEpochTime(vRow[2]):
-            books[date].urls[vRow[1]][1] = chromeToEpochTime(vRow[2])
+        books[date].urls.append([vRow[1], 0, chromeToEpochTime(vRow[2])])
 
     urls[url.id] = url
 
 # count num words by scraping the page
 for url in urls.values():
-    try:
-        soup = BeautifulSoup(urllib.urlopen(url.url))
-        url.bytecount = len(unicode(soup))
-    except:
-        continue
-    domain = str(urlparse(str(url.url)).netloc)
+    domain = unicode(urlparse(unicode(url.url)).netloc)
     if domain not in favicons:
-        favicons[domain] = len(favicons)+baseFaviconId
+        favicons[domain] = len(favicons)
     url.faviconId = favicons[domain]
     count += 1
     print str(url.id) + " done... total " + str(count) + " complete"
 
-for book in books.values():
-    book.totalDuration = 0
-    book.totalByteCount = 0
-    for id in book.urls.keys():
-        book.totalDuration += book.urls[id][0]
-        book.totalByteCount += urls[id].bytecount
-
-booksOut = codecs.open('booksOut'+sys.argv[1]+"-"+sys.argv[2], 'w', "utf-8")
+booksOut = codecs.open('booksOut', 'w', "utf-8")
 booksOut.write("books = {")
 for date, book in sorted(books.items()):
     booksOut.write("\""+str(date)+"\": {\n")
@@ -93,14 +73,14 @@ for date, book in sorted(books.items()):
     booksOut.write("\"totalDuration\": " + str(book.totalDuration) + ",\n")
     booksOut.write("\"title\": \"" + book.title + "\",\n")
     booksOut.write("\"cover\": \"" + book.cover + "\",\n")
-    booksOut.write("\"urls\": {")
-    for id, v in sorted(book.urls.items()):
-        booksOut.write(str(id) + ": (" + str(v[0]) + ", \"" + str(v[1])+ "\"), \n")
-    booksOut.write("}, \n")
+    booksOut.write("\"urls\": [")
+    for url in book.urls:
+        booksOut.write('['+str(url[0]) + ", " + str(url[1]) + ", \"" + str(url[2])+ "\"], \n")
+    booksOut.write("], \n")
     booksOut.write("}, \n")
 booksOut.write("};\n")
 
-urlsOut = codecs.open("urlsOut"+sys.argv[1]+"-"+sys.argv[2], 'w', "utf-8")
+urlsOut = codecs.open("urlsOut", 'w', "utf-8")
 urlsOut.write("urls = {")
 for id, url in sorted(urls.items()):
     urlsOut.write("\""+str(id)+"\": {\n")
@@ -112,7 +92,3 @@ for id, url in sorted(urls.items()):
     urlsOut.write("\"faviconId\": " + str(url.faviconId) + ",\n")
     urlsOut.write("}, \n")
 urlsOut.write("};\n")
-
-for fav in favicons.keys():
-    print fav
-    urllib.urlretrieve("http://www.google.com/s2/favicons?domain="+fav, str(favicons[fav]) + ".png")

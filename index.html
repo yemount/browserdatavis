@@ -1,34 +1,61 @@
 <!DOCTYPE html>
-<meta charset="utf-8">
-<html>
-<head>
-	<script src="js/jquery.js"></script>
-	<script src="js/d3/d3.js"></script>
-	<script src="js/d3/d3.geom.js"></script>
-	<script src="js/d3/d3.layout.js"></script>
-	<script src="js/three.js"></script>
-	<script src="js/controls/MyControls.js"></script>
-	<script src="js/stats.min.js"></script>
-	<script src="js/libs/jquery.lettering.js"></script>
-	<script src="js/libs/mustache.js"></script>
-	<script src="js/color-thief.js"></script>
-	<script src="js/urlsOut.js"></script>
-	<script src="fonts/helvetiker_bold.typeface.js"></script>
-	<script src="fonts/helvetiker_regular.typeface.js"></script>
-	<script src="js/booksOut.js"></script>
-	<style>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Components &middot; Flat UI Free</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="shortcut icon" href="images/favicon.ico">
+
+    <style>
 		.favicon{
 			width: 16px;
 			height: 16px;
+			z-index: 0;
 		}
-
+		.faviconOverlay{
+			position: absolute;
+			display: inline;
+			top: 0px;
+			left: 0px;
+			width: 16px;
+			height: 16px;
+		}
+		.faviconDiv{
+			position: relative;
+			display: inline;
+		}
+		#infobar{
+			position: fixed;
+			top: 0px;
+			left: 0px;
+			width: 500px;
+			margin: 5px;
+			background-color: black;
+		}
+		.dateDiv{
+			font-family: "Courier New";
+			background-color: black;
+			color: white;
+  			padding-left: 8px;
+  			padding-right: 8px;
+			display: inline;
+			font-size: 12pt;
+			height: 32px;
+			max-height: 32px;
+			max-width: 128px;
+			width: 128px;
+		}
 	</style>
-</head>
-<body>
-	<div id="info">
-	</div>
-	<img id="lotr" src="images/bookcovers/lotr.gif" style="display: none;"></img>
-	<div id="faviconHolder"></div>
+  </head>
+  <body>
+
+    <div id="faviconHolder">
+
+    <!-- Load JS here for greater good =============================-->
+    <script src="js/jquery-1.8.3.min.js"></script>
+    <script src="js/urlsOut.js"></script>
+	<script src="js/booksOutLong.js"></script>    
 	<script src="js/index.js"></script>	
-</body>
+  </body>
 </html>
