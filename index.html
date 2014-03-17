@@ -1,61 +1,62 @@
-<!DOCTYPE html>
-<html lang="en">
+ <!DOCTYPE HTML>
+<html>
   <head>
-    <meta charset="utf-8">
-    <title>Components &middot; Flat UI Free</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <link rel="shortcut icon" href="images/favicon.ico">
-
+    <title>Iconic History</title>
     <style>
-		.favicon{
-			width: 16px;
-			height: 16px;
-			z-index: 0;
-		}
-		.faviconOverlay{
-			position: absolute;
-			display: inline;
-			top: 0px;
-			left: 0px;
-			width: 16px;
-			height: 16px;
-		}
-		.faviconDiv{
-			position: relative;
-			display: inline;
-		}
-		#infobar{
-			position: fixed;
-			top: 0px;
-			left: 0px;
-			width: 500px;
-			margin: 5px;
-			background-color: black;
-		}
-		.dateDiv{
-			font-family: "Courier New";
-			background-color: black;
-			color: white;
-  			padding-left: 8px;
-  			padding-right: 8px;
-			display: inline;
-			font-size: 12pt;
-			height: 32px;
-			max-height: 32px;
-			max-width: 128px;
-			width: 128px;
-		}
-	</style>
+    @font-face{
+      font-family: Quicksand;
+      src: url(fonts/Quicksand-Regular.otf);
+    }
+    body{
+      font-family: Quicksand;
+      min-width: 800px;
+      font-size: 12pt;
+    }
+
+    a:link {text-decoration: none; color: #ff0000;}      /* unvisited link */
+    a:visited {text-decoration: none; color: #ff0000;}  /* visited link */
+    a:hover {text-decoration: none; color: #ff0000;}  /* mouse over link */
+    a:active {text-decoration: none; color: #ff0000;}  /* selected link */
+    #title{
+    	font-size: 32pt;
+    	margin: 16px;
+    }
+    .centeredBlock{
+    	margin-left: auto;
+    	margin-right: auto;
+    	display: block;
+    }
+    .centeredText{
+    	text-align: center;
+    }
+    #icon{
+    	width: 64px;
+    	height: 64px;
+    	margin-top: 32px;
+    }
+    #screenshot{
+    	width: 800px;
+    	padding: 16px;
+    }
+    </style>
   </head>
+
   <body>
-
-    <div id="faviconHolder">
-
-    <!-- Load JS here for greater good =============================-->
-    <script src="js/jquery-1.8.3.min.js"></script>
-    <script src="js/urlsOut.js"></script>
-	<script src="js/booksOutLong.js"></script>    
-	<script src="js/index.js"></script>	
+  <img id="icon" src="images/icon.png" class="centeredBlock"></img>
+  <p id="title" class="centeredText">Iconic History</p>
+  <p style="font-size: 22px;" class="centeredText">. 
+  	<a href="http://golancourses.net/2014/shan/03/06/project-3-shan-browser-history-visualization/" target="_blank"> About </a> . 
+  	<a href="https://vimeo.com/89219632" target="_blank"> Video </a> . 
+  	<a href="https://github.com/yemount/IconicHistory" target="_blank"> Download </a> .</p>  	
+  <p> 
+  <div class="centeredBlock" style="max-width: 740px;">
+  	Iconic history is a Chrome extension that visualizes your browser history as a favicon stack.
+  	It creates a favicon for each url visited, and compiles all icons into a huge sequence based on access time. See interactive demo 
+  	<a href="demo.html" target="_blank">here</a>.
+  </p>
+  <p style="font-size: 10px; margin-top: 32px;" target="_blank"> Project by <a href="http://www.shan-huang.com">Shan Huang</a>, 
+  	for <a href="http://golancourses.net/2014/" target="_blank">Interactive Art and Computational Design @ CMU, Spring 2014 </a></p>
+  </div>
+  <a href="demo.html" target="_blank"><img id="screenshot" class="centeredBlock" src="images/screenshot-half.png"></img></a>
   </body>
 </html>
